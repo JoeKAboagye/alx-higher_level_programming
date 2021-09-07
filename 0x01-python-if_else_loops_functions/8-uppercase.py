@@ -3,6 +3,7 @@
 This prints a string in uppercase
 """
 
+
 def uppercase(str):
     for i in str:
         if 122 >= ord(i) >= 97:
