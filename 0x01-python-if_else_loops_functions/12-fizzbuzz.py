@@ -11,11 +11,11 @@ three and five print FizzBuzz
 
 def fizzbuzz():
     for num in range(1, 101):
-        str = ""
-        if num % 3 == 0:
-            str += "Fizz"
-        if num % 5 == 0:
-            str += "Buzz"
-        if num % 5 != 0 and num % 3 != 0:
-            str += str(num)
-        print("{} ".format(str), end="")
+        if num % 3 == 0 and num % 5 == 0:
+            print("FizzBuzz ", end="")
+        elif num % 3 == 0:
+            print("Fizz ", end="")
+        elif num % 5 == 0:
+            print("Buzz ", end="")
+        else:
+            print("{} ".format(num), end="")
