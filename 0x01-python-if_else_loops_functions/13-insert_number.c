@@ -1,25 +1,33 @@
 #include "lists.h"
+#include <stdlib.h>
 
 /**
- * check_cycle - check if loop exists in cycle
- * @list: struct to be checked
- *
- * Return: 1 if it is, 0 if not
+ * insert_node - insert a number sorted in a list
+ * @head: data type double ointer of list
+ * @number: data type int number to be added
+ * Return: 0 if no cycle || 1 if there is cycle
  */
-
-int check_cycle(listint_t *list)
+listint_t *insert_node(listint_t **head, int number)
 {
-	listint_t *turtle = list;
-	listint_t *hare = list;
+	listint_t *node = *head;
+	listint_t *new;
 
-	if (list == NULL)
-		return (0);
-	while (turtle != NULL && hare != NULL && hare->next != NULL)
+	new = malloc(sizeof(listint_t));
+	if (new == NULL)
+		return (NULL);
+	new->n = number;
+
+	if (node == NULL || node->n >= number)
 	{
-		turtle = turtle->next;
-		hare = (hare->next)->next;
-		if (turtle == hare)
-			return (1);
+		new->next = node;
+		*head = new;
+		return (new);
 	}
-	return (0);
+	while (node && node->next && node->next->n < number)
+		node = node->next;
+
+	new->next = node->next;
+	node->next = new;
+
+	return (new);
 }
