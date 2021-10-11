@@ -1,7 +1,10 @@
 #!/usr/bin/python3
-"""look up class"""
+"""Can I?"""
 
 
-class MyInt(int):
-    """int checker"""
-    pass
+def add_attribute(obj, att, value):
+    """adds a new attribute to an object if it’s possible"""
+
+    if not hasattr(obj, "__dict__"):
+        raise TypeError("can't add new attribute")
+    setattr(obj, att, value)
