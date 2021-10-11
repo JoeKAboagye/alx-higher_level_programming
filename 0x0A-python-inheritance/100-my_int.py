@@ -1,7 +1,14 @@
 #!/usr/bin/python3
-"""look up class"""
+"""My integer"""
 
 
 class MyInt(int):
-    """int checker"""
-    pass
+    """invert operators == and !="""
+
+    def __eq__(self, operator):
+        """invert operator == with !="""
+        return int(self) != operator
+
+    def __ne__(self, operator):
+        """invert operator != with =="""
+        return int(self) == operator
