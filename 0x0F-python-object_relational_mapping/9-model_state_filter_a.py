@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Prints all State objects with a name that contains 'a' in a database.
+0;136;0c'''Prints all State objects with a name that contains 'a' in a database.
 '''
 import sys
 from sqlalchemy import create_engine
@@ -22,5 +22,5 @@ if __name__ == '__main__':
         result = session.query(State).order_by(State.id.asc()).filter(
             State.name.like('%a%')
         )
-        for data in datault:
+        for data in result:
             print('{}: {}'.format(data.id, data.name))
