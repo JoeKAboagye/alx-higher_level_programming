@@ -3,7 +3,8 @@
 Prints all State objects and their City objects
 from the database hbtn_0e_101_usa
 """
-import sys
+
+from sys import argv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -12,20 +13,15 @@ from relationship_city import City
 
 
 if __name__ == '__main__':
-    if len(sys.argv) >= 4:
-        user = sys.argv[1]
-        pword = sys.argv[2]
-        db_name = sys.argv[3]
-        DATABASE_URL = 'mysql://{}:{}@localhost:3306/{}'.format(
-            user, pword, db_name
-        )
-        engine = create_engine(DATABASE_URL)
-        Base.metadata.create_all(engine)
-        session = sessionmaker(bind=engine)()
-        result = session.query(State).join(City).order_by(
-            State.id.asc(), City.id.asc()
-        ).all()
-        for state in result:
-            print('{}: {}'.format(state.id, state.name))
-            for city in state.cities:
-                print('\t{}: {}'.format(city.id, city.name))
+    eng = create_engine("mysql+mysqldb://{}:{}@localhost/{}".format(argv[1],
+                                                                    argv[2],
+                                                                    argv[3]))
+    Base.metadata.create_all(eng)
+    Session = sessionmaker(bind=eng)
+    session = Session()
+    rows = session.query(State).all()
+    for state in rows:
+        print("{}: {}".format(state.id, state.name))
+        for city in state.cities:
+            print("    {}: {}".format(city.id, city.name))
+    session.close()
