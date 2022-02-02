@@ -3,27 +3,28 @@
     - the first argument is the Movie ID.
     - displays one character name by line.
 */
+
 const request = require('request');
-const url = 'https://swapi-api.hbtn.io/api/films/' + process.argv[2];
-request(url, function (error, response, body) {
-  if (error) console.log(error);
-  else {
-    const characters = JSON.parse(body).characters;
-    characters_dict = {};
-    characters.forEach((character) => {
-      request(character, function (error, response, body) {
-        if (error) console.log(error);
-        else {
-          let id = JSON.parse(body).url;
-          id = id.replace('https://swapi-api.hbtn.io/api/people/', '');
-          id = id.replace('/', '');
-          const name = JSON.parse(body).name;
-          characters_dict[id] = (name);
-        }
-      });
-    });
-    for (let id in characters_dict) {
-        console.log(characters_dict[id]);
+const BASE_URL = 'https://swapi-api.hbtn.io/api';
+
+if (process.argv.length > 2) {
+  request(`${BASE_URL}/films/${process.argv[2]}/`, (err, res, body) => {
+    if (err) {
+      console.log(err);
     }
-  }
-});
+    const charactersURL = JSON.parse(body).characters;
+    const charactersName = charactersURL.map(
+      url => new Promise((resolve, reject) => {
+        request(url, (err, res, body) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(JSON.parse(body).name);
+        });
+      }));
+
+    Promise.all(charactersName)
+      .then(names => console.log(names.join('\n')))
+      .catch(err => console.log(err));
+  });
+}
